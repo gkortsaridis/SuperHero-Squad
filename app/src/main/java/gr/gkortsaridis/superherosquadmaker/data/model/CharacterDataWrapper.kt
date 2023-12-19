@@ -1,10 +1,12 @@
 package gr.gkortsaridis.superherosquadmaker.data.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Decided to slim down the data classes to the basic data i will need for this demo
@@ -23,7 +25,7 @@ data class CharacterDataContainer(
     val results: List<Hero>
 )
 
-
+@Parcelize
 @Entity
 data class Hero(
     @PrimaryKey val id: Int,
@@ -32,13 +34,14 @@ data class Hero(
     @TypeConverters(ThumbnailConverter::class)
     @ColumnInfo(name = "hero_thumbnail") val thumbnail: Thumbnail,
     @ColumnInfo(name = "hero_description") val description: String,
-)
+) : Parcelable
 
+@Parcelize
 @Entity
 data class Thumbnail(
     @PrimaryKey val path: String,
     @ColumnInfo(name = "thumbnail_extension") val extension: String,
-)
+): Parcelable
 
 class ThumbnailConverter {
     @TypeConverter

@@ -60,7 +60,6 @@ class HeroesAdapter : RecyclerView.Adapter<HeroesAdapter.HeroesItemVH>() {
     sealed class HeroesItemVH(view: View) : RecyclerView.ViewHolder(view) {
         class HeroViewHolder(private val binding: HeroListViewBinding) : HeroesItemVH(binding.root) {
             fun bind(hero: Hero, clickListener: ClickListener?) {
-                Log.i("TEST", "Binding $hero")
                 binding.hero = hero
                 binding.root.setOnClickListener { clickListener?.onHeroClicked(hero) }
             }

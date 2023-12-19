@@ -1,6 +1,8 @@
 package gr.gkortsaridis.superherosquadmaker.ui.main.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
@@ -17,6 +19,7 @@ import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
 import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
 import gr.gkortsaridis.superherosquadmaker.databinding.ActivityMainBinding
+import gr.gkortsaridis.superherosquadmaker.ui.hero.view.HeroDetailsActivity
 import gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel.MainViewModel
 import gr.gkortsaridis.superherosquadmaker.utils.HeroListCreator
 import kotlinx.coroutines.launch
@@ -58,6 +61,10 @@ class MainActivity : AppCompatActivity() {
         }
         adapter.setClickListener(object : HeroesAdapter.ClickListener {
             override fun onHeroClicked(hero: Hero) {
+                startActivity(Intent(this@MainActivity, HeroDetailsActivity::class.java).apply {
+                    putExtra("HERO", hero)
+                })
+
             }
 
             override fun onLoadMoreClicked() {
