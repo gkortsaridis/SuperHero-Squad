@@ -1,12 +1,17 @@
 package gr.gkortsaridis.superherosquadmaker.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+
+/**
+ * Decided to slim down the data classes to the basic data i will need for this demo
+ */
 data class CharacterDataWrapper(
     val code: Int,
     val status: String,
-    val copyright: String,
-    val attributionText: String,
-    val attributionHTML: String,
-    val etag: String,
     val data: CharacterDataContainer,
 )
 
@@ -18,40 +23,34 @@ data class CharacterDataContainer(
     val results: List<Hero>
 )
 
+
+@Entity
 data class Hero(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val modified: String,
-    val thumbnail: Thumbnail,
-    val resourceURI: String,
-    val comics: Comics,
-    val series: Series,
-    val stories: Stories,
-    //private val events: Events,
-    //private val urls: List<Url>
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name = "hero_name") val name: String,
+
+    @TypeConverters(ThumbnailConverter::class)
+    @ColumnInfo(name = "hero_thumbnail") val thumbnail: Thumbnail,
+    @ColumnInfo(name = "hero_description") val description: String,
 )
 
+@Entity
 data class Thumbnail(
-    private val path: String,
-    private val extension: String
+    @PrimaryKey val path: String,
+    @ColumnInfo(name = "thumbnail_extension") val extension: String,
 )
 
-data class Comics(
-    private val available: Int,
-    private val collectionURI: String,
-    //private val items: List<Item>,
-    private val returned: Int
-)
+class ThumbnailConverter {
+    @TypeConverter
+    fun toThumbnail(value: String): Thumbnail =
+        value.split("_#_").let {
+            Thumbnail(
+                it.first(),
+                it.last()
+            )
+        }
 
-data class Series(
-    private val available: Int,
-    private val collectionURI: String,
-    //private val items: List<Item>,
-    private val returned: Int
-)
+    @TypeConverter
+    fun toString(thumbnail: Thumbnail): String = "${thumbnail.path}_#_${thumbnail.extension}"
 
-data class Stories(
-    private val available: Int,
-    private val collectionURI: String,
-)
+}

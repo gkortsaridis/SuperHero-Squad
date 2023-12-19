@@ -7,32 +7,51 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
+import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataContainer
+import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataWrapper
+import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val mainRepository: MainRepository
 ) : ViewModel() {
+
+    private val _content = MutableSharedFlow<HerosUiStates>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
+    val content: Flow<HerosUiStates> = _content.asSharedFlow()
+
     init {
         getHeroes()
     }
 
     fun getHeroes() {
         viewModelScope.launch {
+            _content.emit(HerosUiStates.Loading)
             try {
                 val resp = mainRepository.getHeroes()
                 if(resp.isSuccessful) {
                     val heroes = resp.body()
-                    Log.i("TEST", "Received ${heroes?.data?.results?.size} heroes")
+                    Log.i("TEST", "Count"+heroes?.data?.count)
+                    Log.i("TEST", "Limit"+heroes?.data?.limit)
+                    Log.i("TEST", "Offset"+heroes?.data?.offset)
+                    Log.i("TEST", "Total"+heroes?.data?.total)
+
+                    _content.emit(HerosUiStates.Success(heroes!!))
                 } else {
                     val error = resp.errorBody()
-                    Log.i("TEST", error?.string() ?: "NO ERROR")
+                    _content.emit(HerosUiStates.Error(error?.string() ?: "NO ERROR"))
                 }
-            } catch (ex: Exception) {
-                Log.e("TEST", ex.toString())
+            }catch (ex: Exception) {
+                _content.emit(HerosUiStates.Error(ex.toString()))
             }
         }
-
     }
 
     companion object {
@@ -55,4 +74,9 @@ class MainViewModel(
             }
     }
 
+    sealed class HerosUiStates {
+        data class Success(val heroes: CharacterDataWrapper) : HerosUiStates()
+        data class Error(val error: String) : HerosUiStates()
+        data object Loading : HerosUiStates()
+    }
 }

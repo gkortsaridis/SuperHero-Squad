@@ -10,7 +10,9 @@ interface MarvelApiService {
     suspend fun getHeroes(
         @Query("apikey") apiKey: String,
         @Query("ts") timestamp: String,
-        @Query("hash") hash: String
+        @Query("hash") hash: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Response<CharacterDataWrapper>
 
 }
