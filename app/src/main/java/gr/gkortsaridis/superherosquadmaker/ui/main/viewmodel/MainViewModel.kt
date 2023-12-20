@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-
+    private val heroesDownloaded: MutableList<Hero> = mutableListOf()
     private val _heroes = MutableSharedFlow<HerosUiStates>()
     val heroes: Flow<HerosUiStates> = _heroes.asSharedFlow()
 
@@ -37,12 +37,8 @@ class MainViewModel(
                 val resp = mainRepository.getHeroes()
                 if(resp.isSuccessful) {
                     val heroes = resp.body()
-                    Log.i("TEST", "Count"+heroes?.data?.count)
-                    Log.i("TEST", "Limit"+heroes?.data?.limit)
-                    Log.i("TEST", "Offset"+heroes?.data?.offset)
-                    Log.i("TEST", "Total"+heroes?.data?.total)
-
-                    _heroes.emit(HerosUiStates.Success(heroes!!))
+                    heroesDownloaded.addAll(heroes!!.data.results)
+                    _heroes.emit(HerosUiStates.Success(heroesDownloaded, heroes.data.total > (heroes.data.offset + heroes.data.count)))
                 } else {
                     val error = resp.errorBody()
                     _heroes.emit(HerosUiStates.Error(error?.string() ?: "NO ERROR"))
@@ -81,7 +77,7 @@ class MainViewModel(
     }
 
     sealed class HerosUiStates {
-        data class Success(val heroes: CharacterDataWrapper) : HerosUiStates()
+        data class Success(val heroes: List<Hero>, val hasMore: Boolean) : HerosUiStates()
         data class Error(val error: String) : HerosUiStates()
         data object Loading : HerosUiStates()
     }

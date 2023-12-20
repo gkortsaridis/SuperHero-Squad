@@ -21,7 +21,6 @@ import gr.gkortsaridis.superherosquadmaker.ui.hero.view.HeroDetailsActivity
 import gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel.MainViewModel
 import gr.gkortsaridis.superherosquadmaker.utils.HeroListCreator
 import gr.gkortsaridis.superherosquadmaker.utils.HeroView
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -76,8 +75,7 @@ class MainActivity : AppCompatActivity() {
                     Log.i("TEST", "Loading")
                 }
                 is MainViewModel.HerosUiStates.Success -> {
-                    Log.i("TEST", heroUiState.heroes.toString())
-                    adapter.setHeroesToDisplay(HeroListCreator.createHeroList(heroUiState.heroes.data))
+                    adapter.setHeroesToDisplay(HeroListCreator.createHeroList(heroUiState.heroes, heroUiState.hasMore))
                 }
                 is MainViewModel.HerosUiStates.Error -> {
                     Log.i("TEST", heroUiState.error)
@@ -88,13 +86,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun collectSquad() = lifecycleScope.launch {
         viewModel.squad.collect { squad ->
-            Log.i("TEST", "My squad is: $squad")
             binding.mySquadList.removeAllViews()
             binding.mySquadContainer.visibility = if(squad.isEmpty()) View.GONE else View.VISIBLE
-            squad.forEach { squadHero ->
+            squad.sortedBy { it.name }.forEach { squadHero ->
                 val heroView = HeroView(this@MainActivity).apply {
                     hero = squadHero
-                    size = HeroView.HeroSize.SmallVertical
+                    style = HeroView.HeroViewStyle.Vertical
                 }
                 binding.mySquadList.addView(heroView)
             }

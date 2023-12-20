@@ -5,10 +5,9 @@ import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.ui.main.view.HeroesAdapter
 
 object HeroListCreator {
-
-    fun createHeroList(data: CharacterDataContainer): List<HeroesAdapter.AdapterItem> {
-        val heroList: MutableList<HeroesAdapter.AdapterItem> = data.results.map { HeroesAdapter.AdapterItem.HeroItem(it) }.toMutableList()
-        if(data.offset + data.count < data.total) {
+    fun createHeroList(heroes: List<Hero>, hasMore: Boolean): List<HeroesAdapter.AdapterItem> {
+        val heroList: MutableList<HeroesAdapter.AdapterItem> = heroes.map { HeroesAdapter.AdapterItem.HeroItem(it) }.toMutableList()
+        if(hasMore) {
             heroList.add(HeroesAdapter.AdapterItem.LoadMoreItem)
         }
         return heroList

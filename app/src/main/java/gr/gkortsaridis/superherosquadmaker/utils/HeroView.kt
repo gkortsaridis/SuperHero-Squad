@@ -2,10 +2,10 @@ package gr.gkortsaridis.superherosquadmaker.utils
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import gr.gkortsaridis.superherosquadmaker.R
@@ -31,29 +31,44 @@ class HeroView @JvmOverloads constructor(
             }
         }
 
-    var size: HeroSize = HeroSize.MediumHorizontal
+    var style: HeroViewStyle = HeroViewStyle.Horizontal
         set(value) {
             field = value
-
             when (value) {
-                HeroSize.SmallVertical -> {
+                HeroViewStyle.Vertical -> {
+                    binding.heroIcon.layoutParams.apply {
+                        width = dpToPx(64)
+                        height = dpToPx(64)
+                    }
+                    binding.heroCard.layoutParams.apply {
+                        width = dpToPx(64)
+                        height = dpToPx(64)
+                    }
+                    binding.heroCard.radius = dpToPx(32).toFloat()
                     orientation = VERTICAL
                     binding.divider.visibility = View.GONE
+                    binding.heroName.maxLines = 2
+                    binding.heroName.gravity = Gravity.CENTER_HORIZONTAL
                 }
-                HeroSize.MediumHorizontal -> {
+                HeroViewStyle.Horizontal -> {
                     orientation = HORIZONTAL
                     binding.divider.visibility = View.VISIBLE
-                    //binding?.parentLayout?.orientation = LinearLayout.HORIZONTAL
+                    binding.heroName.gravity = Gravity.CENTER_VERTICAL
+                    binding.textContainer.setPadding(dpToPx(16), 0, 0, 0)
                 }
             }
         }
 
-    /**
-     * I know i could have size and orientation in different fields,
-     * I chose for this demo to have them together for simplicity
-     */
-    sealed class HeroSize {
-        data object SmallVertical : HeroSize()
-        data object MediumHorizontal : HeroSize()
+
+    private fun dpToPx(dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            resources.displayMetrics).toInt()
+    }
+
+    sealed class HeroViewStyle {
+        data object Vertical : HeroViewStyle()
+        data object Horizontal : HeroViewStyle()
     }
 }

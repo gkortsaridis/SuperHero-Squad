@@ -1,6 +1,5 @@
 package gr.gkortsaridis.superherosquadmaker.ui.main.view
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListLoadMoreBinding
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListViewBinding
+import gr.gkortsaridis.superherosquadmaker.utils.HeroView
 
 class HeroesAdapter : RecyclerView.Adapter<HeroesAdapter.HeroesItemVH>() {
 
@@ -60,7 +60,8 @@ class HeroesAdapter : RecyclerView.Adapter<HeroesAdapter.HeroesItemVH>() {
     sealed class HeroesItemVH(view: View) : RecyclerView.ViewHolder(view) {
         class HeroViewHolder(private val binding: HeroListViewBinding) : HeroesItemVH(binding.root) {
             fun bind(hero: Hero, clickListener: ClickListener?) {
-                binding.hero = hero
+                binding.heroView.hero = hero
+                binding.heroView.style = HeroView.HeroViewStyle.Horizontal
                 binding.root.setOnClickListener { clickListener?.onHeroClicked(hero) }
             }
         }
