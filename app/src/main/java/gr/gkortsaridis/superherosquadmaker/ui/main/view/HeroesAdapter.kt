@@ -3,6 +3,7 @@ package gr.gkortsaridis.superherosquadmaker.ui.main.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListLoadMoreBinding
@@ -62,7 +63,7 @@ class HeroesAdapter : RecyclerView.Adapter<HeroesAdapter.HeroesItemVH>() {
             fun bind(hero: Hero, clickListener: ClickListener?) {
                 binding.heroView.hero = hero
                 binding.heroView.style = HeroView.HeroViewStyle.Horizontal
-                binding.root.setOnClickListener { clickListener?.onHeroClicked(hero) }
+                binding.root.setOnClickListener { clickListener?.onHeroClicked(hero, binding.heroView.heroImageView) }
             }
         }
 
@@ -80,7 +81,7 @@ class HeroesAdapter : RecyclerView.Adapter<HeroesAdapter.HeroesItemVH>() {
     }
 
     interface ClickListener {
-        fun onHeroClicked(hero: Hero)
+        fun onHeroClicked(hero: Hero, heroImageView: ImageView)
         fun onLoadMoreClicked()
     }
 }

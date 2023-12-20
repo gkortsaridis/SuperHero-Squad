@@ -14,6 +14,7 @@
         android:layout_height="72dp"
         android:orientation="horizontal"
         android:id="@+id/parent_layout"
+        android:transitionName="hero_image"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true">
 

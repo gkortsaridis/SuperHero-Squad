@@ -1,11 +1,14 @@
 package gr.gkortsaridis.superherosquadmaker.ui.main.view
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +26,8 @@ import gr.gkortsaridis.superherosquadmaker.utils.HeroListCreator
 import gr.gkortsaridis.superherosquadmaker.utils.HeroView
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), HeroesAdapter.ClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = HeroesAdapter()
@@ -42,22 +46,10 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
 
-        adapter.setClickListener(object : HeroesAdapter.ClickListener {
-            override fun onHeroClicked(hero: Hero) {
-                startActivity(
-                    Intent(this@MainActivity, HeroDetailsActivity::class.java).apply {
-                        putExtra("HERO", hero)
-                    }
-                )
-            }
-
-            override fun onLoadMoreClicked() {
-                MarvelApiHelper.characterOffset += MarvelApiHelper.characterLimit
-                viewModel.getHeroes()
-            }
-        })
+        adapter.setClickListener(this)
         binding.marvelSquadList.adapter = adapter
         binding.marvelSquadList.layoutManager = LinearLayoutManager(this)
+        binding.toolbar.title = getString(R.string.app_name)
 
         collectHeroes()
         collectSquad()
@@ -69,16 +61,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun collectHeroes() = lifecycleScope.launch {
+        val dialog = ProgressDialog(this@MainActivity)
+        dialog.setMessage("Loading...")
+
         viewModel.heroes.collect { heroUiState ->
             when(heroUiState) {
                 MainViewModel.HerosUiStates.Loading -> {
-                    Log.i("TEST", "Loading")
+                    dialog.show()
                 }
                 is MainViewModel.HerosUiStates.Success -> {
+                    dialog.hide()
                     adapter.setHeroesToDisplay(HeroListCreator.createHeroList(heroUiState.heroes, heroUiState.hasMore))
                 }
                 is MainViewModel.HerosUiStates.Error -> {
-                    Log.i("TEST", heroUiState.error)
+                    dialog.hide()
+                    Toast.makeText(this@MainActivity, "We encountered an error", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -92,9 +89,26 @@ class MainActivity : AppCompatActivity() {
                 val heroView = HeroView(this@MainActivity).apply {
                     hero = squadHero
                     style = HeroView.HeroViewStyle.Vertical
+                    setOnClickListener { onHeroClicked(squadHero, heroImageView) }
                 }
                 binding.mySquadList.addView(heroView)
             }
         }
+    }
+
+    override fun onHeroClicked(hero: Hero, heroImageView: ImageView) {
+        startActivity(
+            Intent(this@MainActivity, HeroDetailsActivity::class.java).apply {
+                putExtra("HERO", hero)
+            },
+            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@MainActivity, heroImageView, "hero_image"
+            ).toBundle()
+        )
+    }
+
+    override fun onLoadMoreClicked() {
+        MarvelApiHelper.characterOffset += MarvelApiHelper.characterLimit
+        viewModel.getHeroes()
     }
 }

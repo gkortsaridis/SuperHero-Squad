@@ -9,49 +9,62 @@
             type="gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel.HeroDetailsViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.hero.view.HeroDetailsActivity">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="360dp"
-            android:id="@+id/hero_image"
-            android:scaleType="centerCrop"
-            app:imageUrl="@{viewModel.hero.thumbnail}"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/hero_name"
-            android:textSize="34sp"
-            android:text="@{viewModel.hero.name}"
-            android:textColor="@color/text_dark"
-            android:layout_margin="16dp"
-            tools:text="Hero Name" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/hero_action_btn"
-            android:backgroundTint="@{viewModel.heroInSquad ? @color/danger : @color/brand}"
-            android:text="@{viewModel.heroInSquad ? @string/fire_from_squad : @string/hire_to_squad}"
-            android:layout_margin="16dp"/>
-
-        <ScrollView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp">
+            android:orientation="vertical"
+            tools:context=".ui.hero.view.HeroDetailsActivity">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:id="@+id/hero_image"
+                android:scaleType="centerCrop"
+                android:transitionName="hero_image"
+                app:imageUrl="@{viewModel.hero.thumbnail}"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/hero_details"
-                android:textColor="@color/text_mid"
-                android:textSize="16sp"
-                android:text="@{viewModel.hero.description}"
-                tools:text="Hero description"/>
-        </ScrollView>
+                android:id="@+id/hero_name"
+                android:textSize="34sp"
+                android:text="@{viewModel.hero.name}"
+                android:textColor="@color/text_dark"
+                android:layout_margin="16dp"
+                tools:text="Hero Name" />
 
-    </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hero_action_btn"
+                android:backgroundTint="@{viewModel.heroInSquad ? @color/danger : @color/brand}"
+                android:text="@{viewModel.heroInSquad ? @string/fire_from_squad : @string/hire_to_squad}"
+                android:layout_margin="16dp"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hero_details"
+                    android:textColor="@color/text_mid"
+                    android:textSize="16sp"
+                    android:text="@{viewModel.hero.description}"
+                    tools:text="Hero description"/>
+            </ScrollView>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:layout_margin="8dp"
+            android:id="@+id/close_btn"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+    </RelativeLayout>
+
 </layout>

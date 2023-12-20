@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import gr.gkortsaridis.superherosquadmaker.R
@@ -58,6 +59,9 @@ class HeroView @JvmOverloads constructor(
                 }
             }
         }
+
+    val heroImageView: ImageView
+        get() = binding.heroIcon
 
 
     private fun dpToPx(dp: Int): Int {

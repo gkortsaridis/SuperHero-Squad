@@ -40,5 +40,7 @@ class HeroDetailsActivity : AppCompatActivity() {
         binding.heroActionBtn.setOnClickListener {
             viewModel.handleHeroAction()
         }
+
+        binding.closeBtn.setOnClickListener { finishAfterTransition() }
     }
 }
