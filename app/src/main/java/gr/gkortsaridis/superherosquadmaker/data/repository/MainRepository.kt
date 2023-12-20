@@ -5,8 +5,9 @@ import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MainRepository(
+class MainRepository @Inject constructor(
     private val apiHelper: MarvelApiHelper,
     private val roomDb: HeroesDatabase
 ) {

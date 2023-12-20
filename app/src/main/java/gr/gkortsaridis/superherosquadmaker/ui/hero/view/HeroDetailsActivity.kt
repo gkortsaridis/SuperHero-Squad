@@ -1,36 +1,30 @@
 package gr.gkortsaridis.superherosquadmaker.ui.hero.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.WindowInsets
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.room.Room
-import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import gr.gkortsaridis.superherosquadmaker.R
-import gr.gkortsaridis.superherosquadmaker.data.api.MarvelApiHelper
-import gr.gkortsaridis.superherosquadmaker.data.api.RetrofitBuilder
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
-import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
 import gr.gkortsaridis.superherosquadmaker.databinding.ActivityHeroDetailsBinding
 import gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel.HeroDetailsViewModel
 
+@AndroidEntryPoint
 class HeroDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHeroDetailsBinding
 
-    private val viewModel: HeroDetailsViewModel by viewModels {
-        HeroDetailsViewModel.provideFactory(
-            myRepository = MainRepository(
-                MarvelApiHelper(RetrofitBuilder.apiService),
-                Room.databaseBuilder(applicationContext, HeroesDatabase::class.java, "heroes-db").build()
-            ),
-            owner = this)
-    }
+    private val viewModel: HeroDetailsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hero_details)
+        window.insetsController?.hide(WindowInsets.Type.statusBars())
+        window.statusBarColor = Color.TRANSPARENT
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

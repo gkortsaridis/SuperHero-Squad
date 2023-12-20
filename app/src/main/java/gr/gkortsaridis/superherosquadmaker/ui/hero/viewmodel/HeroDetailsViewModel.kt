@@ -8,11 +8,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HeroDetailsViewModel(
+@HiltViewModel
+class HeroDetailsViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ): ViewModel() {
     private val _hero = MutableLiveData<Hero>()
@@ -37,24 +40,5 @@ class HeroDetailsViewModel(
     fun setHeroToDisplay(hero: Hero) {
        _hero.value = hero
         heroIsInSquad()
-    }
-    companion object {
-        //Ideally we should setup a proper DI solution.
-        //For the quick project, creating these factories should be ok
-        fun provideFactory(
-            myRepository: MainRepository,
-            owner: SavedStateRegistryOwner,
-            defaultArgs: Bundle? = null,
-        ): AbstractSavedStateViewModelFactory =
-            object : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(
-                    key: String,
-                    modelClass: Class<T>,
-                    handle: SavedStateHandle
-                ): T {
-                    return HeroDetailsViewModel(myRepository) as T
-                }
-            }
     }
 }

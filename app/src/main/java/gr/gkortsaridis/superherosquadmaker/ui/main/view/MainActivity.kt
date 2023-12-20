@@ -12,13 +12,10 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
+import dagger.hilt.android.AndroidEntryPoint
 import gr.gkortsaridis.superherosquadmaker.R
 import gr.gkortsaridis.superherosquadmaker.data.api.MarvelApiHelper
-import gr.gkortsaridis.superherosquadmaker.data.api.RetrofitBuilder
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
-import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
 import gr.gkortsaridis.superherosquadmaker.databinding.ActivityMainBinding
 import gr.gkortsaridis.superherosquadmaker.ui.hero.view.HeroDetailsActivity
 import gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel.MainViewModel
@@ -27,19 +24,13 @@ import gr.gkortsaridis.superherosquadmaker.utils.HeroView
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), HeroesAdapter.ClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = HeroesAdapter()
 
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModel.provideFactory(
-            myRepository = MainRepository(
-                MarvelApiHelper(RetrofitBuilder.apiService),
-                Room.databaseBuilder(applicationContext, HeroesDatabase::class.java, "heroes-db").build()
-            ),
-            owner = this)
-    }
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

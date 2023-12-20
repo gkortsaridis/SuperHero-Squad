@@ -7,14 +7,11 @@ object RetrofitBuilder {
 
     private const val BASE_URL = "https://gateway.marvel.com/"
 
-    private fun getRetrofit(): Retrofit {
+    fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            //.addConverterFactory(ScalarsConverterFactory.create())
 
             .build() //Doesn't require the adapter
     }
-
-    val apiService: MarvelApiService = getRetrofit().create(MarvelApiService::class.java)
 }
