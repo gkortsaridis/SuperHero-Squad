@@ -10,9 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HeroDetailsViewModel(
     private val mainRepository: MainRepository
@@ -20,13 +18,20 @@ class HeroDetailsViewModel(
     private val _hero = MutableLiveData<Hero>()
     val hero: LiveData<Hero> = _hero
 
-    private val _heroInSquad = MutableLiveData<Boolean>()
+    private val _heroInSquad = MutableLiveData(false)
     val heroInSquad: LiveData<Boolean> = _heroInSquad
 
     private fun heroIsInSquad() = viewModelScope.launch {
-        withContext(Dispatchers.IO) {
-            _heroInSquad.postValue(mainRepository.getSquad().find { it.id == hero.value?.id } != null)
+        _heroInSquad.postValue(mainRepository.getSquad().find { it.id == hero.value?.id } != null)
+    }
+
+    fun handleHeroAction() = viewModelScope.launch {
+        if (heroInSquad.value == true) {
+            mainRepository.fireHeroFromSquad(hero.value!!)
+        } else {
+            mainRepository.addHeroToSquad(hero.value!!)
         }
+        heroIsInSquad()
     }
 
     fun setHeroToDisplay(hero: Hero) {

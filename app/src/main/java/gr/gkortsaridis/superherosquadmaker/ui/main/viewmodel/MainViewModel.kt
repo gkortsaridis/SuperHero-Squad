@@ -7,11 +7,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
-import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataContainer
 import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataWrapper
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,19 +19,20 @@ class MainViewModel(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    private val _content = MutableSharedFlow<HerosUiStates>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
-    val content: Flow<HerosUiStates> = _content.asSharedFlow()
+    private val _heroes = MutableSharedFlow<HerosUiStates>()
+    val heroes: Flow<HerosUiStates> = _heroes.asSharedFlow()
+
+    private val _squad = MutableSharedFlow<List<Hero>>()
+    val squad: Flow<List<Hero>> = _squad.asSharedFlow()
 
     init {
         getHeroes()
+        getSquad()
     }
 
     fun getHeroes() {
         viewModelScope.launch {
-            _content.emit(HerosUiStates.Loading)
+            _heroes.emit(HerosUiStates.Loading)
             try {
                 val resp = mainRepository.getHeroes()
                 if(resp.isSuccessful) {
@@ -43,14 +42,21 @@ class MainViewModel(
                     Log.i("TEST", "Offset"+heroes?.data?.offset)
                     Log.i("TEST", "Total"+heroes?.data?.total)
 
-                    _content.emit(HerosUiStates.Success(heroes!!))
+                    _heroes.emit(HerosUiStates.Success(heroes!!))
                 } else {
                     val error = resp.errorBody()
-                    _content.emit(HerosUiStates.Error(error?.string() ?: "NO ERROR"))
+                    _heroes.emit(HerosUiStates.Error(error?.string() ?: "NO ERROR"))
                 }
             }catch (ex: Exception) {
-                _content.emit(HerosUiStates.Error(ex.toString()))
+                _heroes.emit(HerosUiStates.Error(ex.toString()))
             }
+        }
+    }
+
+    fun getSquad() {
+        viewModelScope.launch {
+            val savedSquad = mainRepository.getSquad()
+            _squad.emit(savedSquad)
         }
     }
 

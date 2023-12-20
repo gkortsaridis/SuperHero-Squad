@@ -34,6 +34,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/hero_action_btn"
             android:backgroundTint="@{viewModel.heroInSquad ? @color/danger : @color/brand}"
             android:text="@{viewModel.heroInSquad ? @string/fire_from_squad : @string/hire_to_squad}"
             android:layout_margin="16dp"/>

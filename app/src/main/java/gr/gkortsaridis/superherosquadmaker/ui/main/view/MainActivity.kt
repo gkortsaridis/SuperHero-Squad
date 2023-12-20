@@ -2,13 +2,11 @@ package gr.gkortsaridis.superherosquadmaker.ui.main.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
@@ -22,6 +20,8 @@ import gr.gkortsaridis.superherosquadmaker.databinding.ActivityMainBinding
 import gr.gkortsaridis.superherosquadmaker.ui.hero.view.HeroDetailsActivity
 import gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel.MainViewModel
 import gr.gkortsaridis.superherosquadmaker.utils.HeroListCreator
+import gr.gkortsaridis.superherosquadmaker.utils.HeroView
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -42,29 +42,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
-        binding.mySquadContainer.visibility = View.GONE
-        lifecycleScope.launch {
-            viewModel.content.collect { heroUiState ->
-                when(heroUiState) {
-                    MainViewModel.HerosUiStates.Loading -> {
-                        Log.i("TEST", "Loading")
-                    }
-                    is MainViewModel.HerosUiStates.Success -> {
-                        Log.i("TEST", heroUiState.heroes.toString())
-                        adapter.setHeroesToDisplay(HeroListCreator.createHeroList(heroUiState.heroes.data))
-                    }
-                    is MainViewModel.HerosUiStates.Error -> {
-                        Log.i("TEST", heroUiState.error)
-                    }
-                }
-            }
-        }
+
         adapter.setClickListener(object : HeroesAdapter.ClickListener {
             override fun onHeroClicked(hero: Hero) {
-                startActivity(Intent(this@MainActivity, HeroDetailsActivity::class.java).apply {
-                    putExtra("HERO", hero)
-                })
-
+                startActivity(
+                    Intent(this@MainActivity, HeroDetailsActivity::class.java).apply {
+                        putExtra("HERO", hero)
+                    }
+                )
             }
 
             override fun onLoadMoreClicked() {
@@ -75,7 +60,44 @@ class MainActivity : AppCompatActivity() {
         binding.marvelSquadList.adapter = adapter
         binding.marvelSquadList.layoutManager = LinearLayoutManager(this)
 
+        collectHeroes()
+        collectSquad()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getSquad()
+    }
 
+    private fun collectHeroes() = lifecycleScope.launch {
+        viewModel.heroes.collect { heroUiState ->
+            when(heroUiState) {
+                MainViewModel.HerosUiStates.Loading -> {
+                    Log.i("TEST", "Loading")
+                }
+                is MainViewModel.HerosUiStates.Success -> {
+                    Log.i("TEST", heroUiState.heroes.toString())
+                    adapter.setHeroesToDisplay(HeroListCreator.createHeroList(heroUiState.heroes.data))
+                }
+                is MainViewModel.HerosUiStates.Error -> {
+                    Log.i("TEST", heroUiState.error)
+                }
+            }
+        }
+    }
+
+    private fun collectSquad() = lifecycleScope.launch {
+        viewModel.squad.collect { squad ->
+            Log.i("TEST", "My squad is: $squad")
+            binding.mySquadList.removeAllViews()
+            binding.mySquadContainer.visibility = if(squad.isEmpty()) View.GONE else View.VISIBLE
+            squad.forEach { squadHero ->
+                val heroView = HeroView(this@MainActivity).apply {
+                    hero = squadHero
+                    size = HeroView.HeroSize.SmallVertical
+                }
+                binding.mySquadList.addView(heroView)
+            }
+        }
     }
 }

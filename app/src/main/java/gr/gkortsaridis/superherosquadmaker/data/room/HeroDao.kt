@@ -15,8 +15,8 @@ interface HeroDao {
     fun loadAById(heroId: Int): Hero
 
     @Insert
-    fun insertAll(hero: Hero)
+    fun insertHero(hero: Hero)
 
     @Delete
-    fun delete(hero: Hero)
+    fun deleteHero(hero: Hero)
 }

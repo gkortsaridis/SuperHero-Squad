@@ -32,8 +32,13 @@ class HeroDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hero_details)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         val hero = intent.getParcelableExtra("HERO", Hero::class.java)!!
         viewModel.setHeroToDisplay(hero)
+
+        binding.heroActionBtn.setOnClickListener {
+            viewModel.handleHeroAction()
+        }
     }
 }
