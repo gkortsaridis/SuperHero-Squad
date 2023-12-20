@@ -1,16 +1,18 @@
 package gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel
 
 import android.os.Bundle
-import androidx.databinding.ObservableField
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import gr.gkortsaridis.superherosquadmaker.data.model.Hero
 import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel.MainViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HeroDetailsViewModel(
     private val mainRepository: MainRepository
@@ -18,8 +20,18 @@ class HeroDetailsViewModel(
     private val _hero = MutableLiveData<Hero>()
     val hero: LiveData<Hero> = _hero
 
+    private val _heroInSquad = MutableLiveData<Boolean>()
+    val heroInSquad: LiveData<Boolean> = _heroInSquad
+
+    private fun heroIsInSquad() = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            _heroInSquad.postValue(mainRepository.getSquad().find { it.id == hero.value?.id } != null)
+        }
+    }
+
     fun setHeroToDisplay(hero: Hero) {
        _hero.value = hero
+        heroIsInSquad()
     }
     companion object {
         //Ideally we should setup a proper DI solution.

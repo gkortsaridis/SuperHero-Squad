@@ -15,20 +15,42 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true">
 
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="match_parent"
-            android:id="@+id/hero_icon"
-            app:imageUrl="@{hero.thumbnail}"
-            tools:src="@mipmap/ic_launcher_round" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="28dp"
+            android:layout_margin="8dp"
+            app:cardElevation="5dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/hero_icon"
+                app:imageUrl="@{hero.thumbnail}"
+                android:scaleType="centerCrop"
+                tools:src="@mipmap/ic_launcher_round" />
+        </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/hero_name"
-            android:layout_gravity="center_vertical"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="16dp"
-            android:text="@{hero.name}"
-            tools:text="Hero name" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/hero_name"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@{hero.name}"
+                android:textSize="16sp"
+                android:textColor="@color/text_dark"
+                tools:text="Hero name" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"/>
+        </LinearLayout>
+
     </LinearLayout>
 </layout>
