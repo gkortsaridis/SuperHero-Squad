@@ -68,3 +68,43 @@ Disclaimer
 ----------
 
 We will not use any of this code for any of Plum's applications.
+
+
+Android Engineering Task Solution by George Kortsaridis
+=====================
+
+For a basic overview of the android application, there are two activities (MainActivity & HeroDetailsActivity)
+MainActivity is responsible for:
+1. loading all the heroes from the Marvel API
+2. Handle the pagginated data from the API
+3. Display all of the saved heros (in my squad)
+4. Handle hero click events (from my squad and the hero list) to open the HeroDetailsActivity
+
+HeroDetailsActivity is responsible for:
+1. Displaying the name, description and image of the selected hero
+2. Handle saving and removing selected hero from my squad (Local Room database)
+
+Some main technologies used in this project:
+* The project is architected using a MVVM pattern, with main separation zones being Activity <-> ViewModel <-> Repository <-> API/DB
+* Retrofit is used for the API calss
+* Room is used for storing heroes (squad) locally
+* DataBinding is used throughout the project to split the UI set logic as much as possible
+* A custom HeroView was created, to be reused on both the squad list and the heros list
+
+In terms of unit testing, i have covered the main aspects of the ViewModels high level functionality. Having more time, i would like to add specific tests to cover the room database separately.
+
+The project code structure is the following:
+app
+* data
+  *  api --> Anything to do with API creation
+  *  model --> POJOS used in the project
+  *  repository --> Repositories of the project
+  *  room --> Anything to do with Room
+* ui
+  * hero --> Hero Details Screen related code
+    * view
+    * viewmodel
+  * main --> Main Screen related code
+    * view
+    * viewmodel
+* utils --> Various helpers

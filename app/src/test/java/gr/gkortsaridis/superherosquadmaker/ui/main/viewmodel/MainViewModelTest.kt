@@ -30,8 +30,6 @@ class MainViewModelTest {
     var coroutinesTestRule = CoroutineTestRule()
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var heroViewModel: HeroDetailsViewModel
-
     private lateinit var mainRepository: MainRepository
 
     private val marvelApiHelper = mockk<MarvelApiHelper>(relaxed = true)
