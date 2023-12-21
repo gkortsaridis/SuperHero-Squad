@@ -1,5 +1,6 @@
 package gr.gkortsaridis.superherosquadmaker.ui.main.view
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -52,8 +53,10 @@ class MainActivity : AppCompatActivity(), HeroesAdapter.ClickListener {
     }
 
     private fun collectHeroes() = lifecycleScope.launch {
-        val dialog = ProgressDialog(this@MainActivity)
-        dialog.setMessage("Loading...")
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setMessage("Loading...")
+        builder.setCancelable(false)
+        val dialog = builder.create()
 
         viewModel.heroes.collect { heroUiState ->
             when(heroUiState) {
