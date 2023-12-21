@@ -38,7 +38,7 @@ class HeroDetailsViewModel @Inject constructor(
     }
 
     fun setHeroToDisplay(hero: Hero) {
-       _hero.value = hero
+       _hero.postValue(hero)
         heroIsInSquad()
     }
 }
