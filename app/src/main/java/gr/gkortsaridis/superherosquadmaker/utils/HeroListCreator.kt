@@ -1,7 +1,6 @@
 package gr.gkortsaridis.superherosquadmaker.utils
 
-import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataContainer
-import gr.gkortsaridis.superherosquadmaker.data.model.Hero
+import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.ui.main.view.HeroesAdapter
 
 object HeroListCreator {

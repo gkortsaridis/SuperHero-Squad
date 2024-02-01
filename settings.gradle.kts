@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Superhero Squad Maker"
 include(":app")
- 
+include(":marvelherodownloader")

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="hero"
-            type="gr.gkortsaridis.superherosquadmaker.data.model.Hero" />
+            type="gr.gkortsaridis.marvelherodownloader.model.Hero" />
     </data>
 
     <merge

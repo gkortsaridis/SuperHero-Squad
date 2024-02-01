@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import gr.gkortsaridis.superherosquadmaker.R
-import gr.gkortsaridis.superherosquadmaker.data.model.Hero
+import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroViewBinding
 
 

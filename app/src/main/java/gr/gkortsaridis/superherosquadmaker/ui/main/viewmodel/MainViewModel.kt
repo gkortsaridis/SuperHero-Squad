@@ -1,23 +1,26 @@
 package gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gr.gkortsaridis.superherosquadmaker.data.model.Hero
-import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
+import gr.gkortsaridis.marvelherodownloader.model.Hero
+import gr.gkortsaridis.marvelherodownloader.usecase.DownloadHeroesUseCase
+import gr.gkortsaridis.superherosquadmaker.usecase.RetrieveSquadUseCase
+import gr.gkortsaridis.superherosquadmaker.utils.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainRepository: MainRepository
-) : ViewModel() {
+    private val downloadHeroesUseCase: DownloadHeroesUseCase,
+    private val retrieveSquadUseCase: RetrieveSquadUseCase,
+) : BaseViewModel() {
     private val heroesDownloaded: MutableList<Hero> = mutableListOf()
-    private val _heroes = MutableSharedFlow<HerosUiStates>()
-    val heroes: Flow<HerosUiStates> = _heroes.asSharedFlow()
+    private val _heroes = MutableSharedFlow<HeroesUiStates>()
+    val heroes: SharedFlow<HeroesUiStates> = _heroes.asSharedFlow()
 
     private val _squad = MutableSharedFlow<List<Hero>>()
     val squad: Flow<List<Hero>> = _squad.asSharedFlow()
@@ -27,35 +30,26 @@ class MainViewModel @Inject constructor(
         getSquad()
     }
 
-    fun getHeroes() {
-        viewModelScope.launch {
-            _heroes.emit(HerosUiStates.Loading)
-            try {
-                val resp = mainRepository.getHeroes()
-                if(resp.isSuccessful) {
-                    val heroes = resp.body()
-                    heroesDownloaded.addAll(heroes!!.data.results)
-                    _heroes.emit(HerosUiStates.Success(heroesDownloaded, heroes.data.total > (heroes.data.offset + heroes.data.count)))
-                } else {
-                    val error = resp.errorBody()
-                    _heroes.emit(HerosUiStates.Error(error?.string() ?: "NO ERROR"))
-                }
-            }catch (ex: Exception) {
-                _heroes.emit(HerosUiStates.Error(ex.toString()))
-            }
-        }
+    fun getHeroes() = withUseCaseScope (
+        loadingUpdater = { isLoading -> _heroes.emit(HeroesUiStates.Loading(isLoading)) },
+        onError = { _heroes.emit(HeroesUiStates.Error(it.message ?: "")) }
+    ) {
+        val heroesResponse = downloadHeroesUseCase()
+        heroesDownloaded.addAll(heroesResponse.data.results)
+        _heroes.emit(HeroesUiStates.Success(heroesDownloaded, heroesResponse.data.total > (heroesResponse.data.offset + heroesResponse.data.count)))
     }
 
-    fun getSquad() {
-        viewModelScope.launch {
-            val savedSquad = mainRepository.getSquad()
-            _squad.emit(savedSquad)
-        }
+    fun getSquad() = withUseCaseScope(
+        loadingUpdater = { },
+        onError = { }
+    ) {
+        val a = retrieveSquadUseCase()
+        _squad.emit(a)
     }
 
-    sealed class HerosUiStates {
-        data class Success(val heroes: List<Hero>, val hasMore: Boolean) : HerosUiStates()
-        data class Error(val error: String) : HerosUiStates()
-        data object Loading : HerosUiStates()
+    sealed class HeroesUiStates {
+        data class Success(val heroes: List<Hero>, val hasMore: Boolean) : HeroesUiStates()
+        data class Error(val error: String) : HeroesUiStates()
+        data class Loading(val isLoading: Boolean) : HeroesUiStates()
     }
 }

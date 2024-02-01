@@ -1,17 +1,13 @@
 package gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import gr.gkortsaridis.superherosquadmaker.data.api.MarvelApiHelper
-import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
 import gr.gkortsaridis.superherosquadmaker.ui.CoroutineTestRule
-import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.mockCaptainAmerica
-import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.mockHulk
 import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.mockIronMan
-import io.mockk.every
+import gr.gkortsaridis.superherosquadmaker.usecase.HeroIsInSquadUseCase
+import gr.gkortsaridis.superherosquadmaker.usecase.ToggleHeroInSquadUseCase
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -26,22 +22,20 @@ class HeroViewModelTest {
 
     private val testDispatcherProvider = CoroutineTestRule().testDispatcherProvider
     private lateinit var viewModel: HeroDetailsViewModel
-    private var mainRepository: MainRepository = mockk<MainRepository>(relaxed = true)
 
-    private val marvelApiHelper = mockk<MarvelApiHelper>(relaxed = true)
-    private val heroesDatabase = mockk<HeroesDatabase>(relaxed = true)
+    private val heroIsInSquadUseCase = mockk<HeroIsInSquadUseCase>(relaxed = true)
+    private val toggleHeroInSquadUseCase = mockk<ToggleHeroInSquadUseCase>(relaxed = true)
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcherProvider.main())
-        mainRepository = MainRepository(marvelApiHelper, heroesDatabase, testDispatcherProvider)
+        viewModel = HeroDetailsViewModel(heroIsInSquadUseCase, toggleHeroInSquadUseCase)
     }
 
 
     @Test
-    fun `test that hero will be in squad if saved in Room`() = runTest(UnconfinedTestDispatcher()) {
-        every { runBlocking { mainRepository.getSquad() }  } returns listOf(mockIronMan, mockHulk, mockCaptainAmerica)
-        viewModel = HeroDetailsViewModel(mainRepository)
+    fun `test that hero will be in squad if saved in Room`() = runTest(testDispatcherProvider.unconfined()) {
+        coEvery { heroIsInSquadUseCase(mockIronMan) } returns true
         viewModel.setHeroToDisplay(mockIronMan)
         viewModel.heroInSquad.observeForever {  }
         assert(viewModel.heroInSquad.value == true)
@@ -49,8 +43,7 @@ class HeroViewModelTest {
 
     @Test
     fun `test that hero will not be in squad if not saved in Room`() = runTest(UnconfinedTestDispatcher()) {
-        every { runBlocking { mainRepository.getSquad() }  } returns listOf(mockHulk, mockCaptainAmerica)
-        viewModel = HeroDetailsViewModel(mainRepository)
+        coEvery { heroIsInSquadUseCase(mockIronMan) } returns false
         viewModel.setHeroToDisplay(mockIronMan)
         viewModel.heroInSquad.observeForever {  }
         assert(viewModel.heroInSquad.value == false)

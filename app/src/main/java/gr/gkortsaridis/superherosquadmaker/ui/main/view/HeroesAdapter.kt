@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import gr.gkortsaridis.superherosquadmaker.data.model.Hero
+import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListLoadMoreBinding
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListViewBinding
 import gr.gkortsaridis.superherosquadmaker.utils.HeroView

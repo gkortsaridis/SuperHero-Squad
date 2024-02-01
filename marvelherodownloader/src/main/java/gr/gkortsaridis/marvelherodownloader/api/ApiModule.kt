@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.data.api
+package gr.gkortsaridis.marvelherodownloader.api
 
 import dagger.Module
 import dagger.Provides

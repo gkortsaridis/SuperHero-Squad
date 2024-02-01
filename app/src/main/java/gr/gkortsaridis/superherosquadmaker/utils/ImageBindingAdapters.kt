@@ -3,7 +3,7 @@ package gr.gkortsaridis.superherosquadmaker.utils
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import gr.gkortsaridis.superherosquadmaker.data.model.Thumbnail
+import gr.gkortsaridis.marvelherodownloader.model.Thumbnail
 
 object ImageBindingAdapters {
 

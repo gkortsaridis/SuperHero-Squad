@@ -22,7 +22,6 @@
                 android:layout_height="360dp"
                 android:id="@+id/hero_image"
                 android:scaleType="centerCrop"
-                android:transitionName="hero_image"
                 app:imageUrl="@{viewModel.hero.thumbnail}"/>
 
             <TextView

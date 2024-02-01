@@ -1,6 +1,6 @@
-package gr.gkortsaridis.superherosquadmaker.data.api
+package gr.gkortsaridis.marvelherodownloader.api
 
-import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataWrapper
+import gr.gkortsaridis.marvelherodownloader.model.CharacterDataWrapper
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

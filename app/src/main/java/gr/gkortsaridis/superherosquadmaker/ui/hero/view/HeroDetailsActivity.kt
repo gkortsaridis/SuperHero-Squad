@@ -4,16 +4,18 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.WindowInsets
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import dagger.hilt.android.AndroidEntryPoint
 import gr.gkortsaridis.superherosquadmaker.R
-import gr.gkortsaridis.superherosquadmaker.data.model.Hero
+import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.ActivityHeroDetailsBinding
 import gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel.HeroDetailsViewModel
+import gr.gkortsaridis.superherosquadmaker.ui.main.view.MainActivity
+import gr.gkortsaridis.superherosquadmaker.utils.BaseActivity
+
 
 @AndroidEntryPoint
-class HeroDetailsActivity : AppCompatActivity() {
+class HeroDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHeroDetailsBinding
 
@@ -28,7 +30,7 @@ class HeroDetailsActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val hero = intent.getParcelableExtra("HERO", Hero::class.java)!!
+        val hero = intent.getParcelableExtra(MainActivity.hero, Hero::class.java)!!
         viewModel.setHeroToDisplay(hero)
 
         binding.heroActionBtn.setOnClickListener {

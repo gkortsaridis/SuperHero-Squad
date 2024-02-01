@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.data.model
+package gr.gkortsaridis.marvelherodownloader.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

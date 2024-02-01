@@ -1,9 +1,9 @@
 package gr.gkortsaridis.superherosquadmaker.ui
 
-import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataContainer
-import gr.gkortsaridis.superherosquadmaker.data.model.CharacterDataWrapper
-import gr.gkortsaridis.superherosquadmaker.data.model.Hero
-import gr.gkortsaridis.superherosquadmaker.data.model.Thumbnail
+import gr.gkortsaridis.marvelherodownloader.model.CharacterDataContainer
+import gr.gkortsaridis.marvelherodownloader.model.CharacterDataWrapper
+import gr.gkortsaridis.marvelherodownloader.model.Hero
+import gr.gkortsaridis.marvelherodownloader.model.Thumbnail
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import retrofit2.Response

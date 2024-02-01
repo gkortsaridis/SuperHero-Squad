@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.data.api
+package gr.gkortsaridis.marvelherodownloader.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
