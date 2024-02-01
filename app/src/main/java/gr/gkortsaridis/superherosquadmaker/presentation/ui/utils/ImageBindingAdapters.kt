@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.utils
+package gr.gkortsaridis.superherosquadmaker.presentation.ui.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel.HeroDetailsViewModel" />
+            type="gr.gkortsaridis.superherosquadmaker.presentation.viewModel.HeroDetailsViewModel" />
     </data>
 
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".ui.hero.view.HeroDetailsActivity">
+            tools:context=".presentation.ui.HeroDetailsActivity">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="360dp"

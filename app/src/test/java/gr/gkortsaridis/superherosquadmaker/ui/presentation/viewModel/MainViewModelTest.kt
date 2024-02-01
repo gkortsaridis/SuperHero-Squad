@@ -1,35 +1,18 @@
-package gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel
+package gr.gkortsaridis.superherosquadmaker.ui.presentation.viewModel
 
-import androidx.lifecycle.viewModelScope
-import gr.gkortsaridis.marvelherodownloader.api.MarvelApiHelper
-import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.marvelherodownloader.usecase.DownloadHeroesUseCase
-import gr.gkortsaridis.superherosquadmaker.data.repository.MainRepository
-import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
+import gr.gkortsaridis.superherosquadmaker.presentation.viewModel.MainViewModel
 import gr.gkortsaridis.superherosquadmaker.ui.CoroutineTestRule
 import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.IRON_MAN_NAME
-import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.heroesErrorResponse
-import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.heroesSuccessResponse
 import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.mockDataWrapper
 import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.mockIronMan
 import gr.gkortsaridis.superherosquadmaker.usecase.RetrieveSquadUseCase
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 

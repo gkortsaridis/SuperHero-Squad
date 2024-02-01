@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel
+package gr.gkortsaridis.superherosquadmaker.presentation.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.usecase.HeroIsInSquadUseCase
 import gr.gkortsaridis.superherosquadmaker.usecase.ToggleHeroInSquadUseCase
-import gr.gkortsaridis.superherosquadmaker.utils.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel

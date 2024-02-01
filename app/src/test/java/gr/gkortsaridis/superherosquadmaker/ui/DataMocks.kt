@@ -30,11 +30,4 @@ object DataMocks {
         status = "Ok",
         data = mockCharacterDataContainer,
     )
-
-    val heroesErrorResponse: Response<CharacterDataWrapper> = Response.error(409, ResponseBody.Companion.create(
-        "application/json".toMediaType(),
-        ""
-    ))
-
-    val heroesSuccessResponse: Response<CharacterDataWrapper> = Response.success(mockDataWrapper)
 }

@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.ui
+package gr.gkortsaridis.superherosquadmaker
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

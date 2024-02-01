@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.data.room
+package gr.gkortsaridis.superherosquadmaker.domain.repository.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

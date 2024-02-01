@@ -1,6 +1,7 @@
-package gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel
+package gr.gkortsaridis.superherosquadmaker.ui.presentation.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import gr.gkortsaridis.superherosquadmaker.presentation.viewModel.HeroDetailsViewModel
 import gr.gkortsaridis.superherosquadmaker.ui.CoroutineTestRule
 import gr.gkortsaridis.superherosquadmaker.ui.DataMocks.mockIronMan
 import gr.gkortsaridis.superherosquadmaker.usecase.HeroIsInSquadUseCase

@@ -1,7 +1,6 @@
-package gr.gkortsaridis.superherosquadmaker.utils
+package gr.gkortsaridis.superherosquadmaker.presentation.ui
 
 import gr.gkortsaridis.marvelherodownloader.model.Hero
-import gr.gkortsaridis.superherosquadmaker.ui.main.view.HeroesAdapter
 
 object HeroListCreator {
     fun createHeroList(heroes: List<Hero>, hasMore: Boolean): List<HeroesAdapter.AdapterItem> {

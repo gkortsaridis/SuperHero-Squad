@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.data.room
+package gr.gkortsaridis.superherosquadmaker.domain.repository.room
 
 import androidx.room.Dao
 import androidx.room.Delete

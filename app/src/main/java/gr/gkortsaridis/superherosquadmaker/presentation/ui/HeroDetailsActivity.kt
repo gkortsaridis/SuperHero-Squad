@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.ui.hero.view
+package gr.gkortsaridis.superherosquadmaker.presentation.ui
 
 import android.graphics.Color
 import android.os.Bundle
@@ -9,9 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import gr.gkortsaridis.superherosquadmaker.R
 import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.ActivityHeroDetailsBinding
-import gr.gkortsaridis.superherosquadmaker.ui.hero.viewmodel.HeroDetailsViewModel
-import gr.gkortsaridis.superherosquadmaker.ui.main.view.MainActivity
-import gr.gkortsaridis.superherosquadmaker.utils.BaseActivity
+import gr.gkortsaridis.superherosquadmaker.presentation.ui.utils.BaseActivity
+import gr.gkortsaridis.superherosquadmaker.presentation.viewModel.HeroDetailsViewModel
 
 
 @AndroidEntryPoint

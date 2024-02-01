@@ -1,15 +1,12 @@
-package gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel
+package gr.gkortsaridis.superherosquadmaker.presentation.viewModel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.marvelherodownloader.usecase.DownloadHeroesUseCase
 import gr.gkortsaridis.superherosquadmaker.usecase.RetrieveSquadUseCase
-import gr.gkortsaridis.superherosquadmaker.utils.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
@@ -36,7 +33,12 @@ class MainViewModel @Inject constructor(
     ) {
         val heroesResponse = downloadHeroesUseCase()
         heroesDownloaded.addAll(heroesResponse.data.results)
-        _heroes.emit(HeroesUiStates.Success(heroesDownloaded, heroesResponse.data.total > (heroesResponse.data.offset + heroesResponse.data.count)))
+        _heroes.emit(
+            HeroesUiStates.Success(
+                heroesDownloaded,
+                heroesResponse.data.total > (heroesResponse.data.offset + heroesResponse.data.count)
+            )
+        )
     }
 
     fun getSquad() = withUseCaseScope(

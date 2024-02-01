@@ -1,7 +1,8 @@
-package gr.gkortsaridis.superherosquadmaker.utils
+package gr.gkortsaridis.superherosquadmaker.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import gr.gkortsaridis.superherosquadmaker.utils.CoroutinesUseCaseRunner
 
 abstract class BaseViewModel() : ViewModel(), CoroutinesUseCaseRunner {
 

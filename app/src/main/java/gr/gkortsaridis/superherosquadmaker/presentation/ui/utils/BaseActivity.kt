@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.utils
+package gr.gkortsaridis.superherosquadmaker.presentation.ui.utils
 
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity

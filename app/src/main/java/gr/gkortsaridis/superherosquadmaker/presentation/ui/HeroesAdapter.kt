@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.ui.main.view
+package gr.gkortsaridis.superherosquadmaker.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListLoadMoreBinding
 import gr.gkortsaridis.superherosquadmaker.databinding.HeroListViewBinding
-import gr.gkortsaridis.superherosquadmaker.utils.HeroView
+import gr.gkortsaridis.superherosquadmaker.presentation.ui.utils.HeroView
 
 class HeroesAdapter : RecyclerView.Adapter<HeroesAdapter.HeroesItemVH>() {
 

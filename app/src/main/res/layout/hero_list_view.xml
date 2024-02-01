@@ -4,7 +4,7 @@
     <data>
     </data>
 
-    <gr.gkortsaridis.superherosquadmaker.utils.HeroView
+    <gr.gkortsaridis.superherosquadmaker.presentation.ui.utils.HeroView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/heroView" />

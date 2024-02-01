@@ -1,4 +1,4 @@
-package gr.gkortsaridis.superherosquadmaker.ui.main.view
+package gr.gkortsaridis.superherosquadmaker.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,11 +13,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import gr.gkortsaridis.superherosquadmaker.R
 import gr.gkortsaridis.marvelherodownloader.model.Hero
 import gr.gkortsaridis.superherosquadmaker.databinding.ActivityMainBinding
-import gr.gkortsaridis.superherosquadmaker.ui.hero.view.HeroDetailsActivity
-import gr.gkortsaridis.superherosquadmaker.ui.main.viewmodel.MainViewModel
-import gr.gkortsaridis.superherosquadmaker.utils.BaseActivity
-import gr.gkortsaridis.superherosquadmaker.utils.HeroListCreator
-import gr.gkortsaridis.superherosquadmaker.utils.HeroView
+import gr.gkortsaridis.superherosquadmaker.presentation.ui.utils.BaseActivity
+import gr.gkortsaridis.superherosquadmaker.presentation.ui.utils.HeroView
+import gr.gkortsaridis.superherosquadmaker.presentation.viewModel.MainViewModel
 import kotlinx.coroutines.launch
 
 
@@ -83,7 +81,7 @@ class MainActivity : BaseActivity(), HeroesAdapter.ClickListener {
     override fun onHeroClicked(hero: Hero, heroImageView: ImageView) {
         startActivity(
             Intent(this@MainActivity, HeroDetailsActivity::class.java).apply {
-                putExtra(MainActivity.hero, hero)
+                putExtra(Companion.hero, hero)
             }
         )
     }

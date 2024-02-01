@@ -1,7 +1,7 @@
 package gr.gkortsaridis.superherosquadmaker.usecase
 
 import gr.gkortsaridis.marvelherodownloader.model.Hero
-import gr.gkortsaridis.superherosquadmaker.data.room.HeroesDatabase
+import gr.gkortsaridis.superherosquadmaker.domain.repository.room.HeroesDatabase
 import javax.inject.Inject
 
 class RetrieveSquadUseCase @Inject constructor(
